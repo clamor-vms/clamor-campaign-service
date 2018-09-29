@@ -44,18 +44,18 @@ var serveCmd = &cobra.Command{
         defer db.Close()
 
         //setup services
-        userService := services.NewUserService(db)
+        campaignService := services.NewCampaignService(db)
 
-        userService.EnsureUserTable()
+        campaignService.EnsureCampaignTable()
 
         //build controllers
         aboutController := skaioskit.NewControllerProcessor(controllers.NewAboutController())
-        userController := skaioskit.NewControllerProcessor(controllers.NewUserController(userService))
+        campaignController := skaioskit.NewControllerProcessor(controllers.NewCampaignController(campaignService))
 
         //setup routing to controllers
         r := mux.NewRouter()
         r.HandleFunc("/about", aboutController.Logic)
-        r.HandleFunc("/user", userController.Logic)
+        r.HandleFunc("/campaign", campaignController.Logic)
 
         //wrap everything behind a jwt middleware
         jwtMiddleware := skaioskit.JWTEnforceMiddleware([]byte(core.JWT_SECRET))

@@ -23,23 +23,23 @@ import (
     "skaioskit/services"
 )
 
-type UserController struct {
-    userService services.IUserService
+type CampaignController struct {
+    campaignService services.ICampaignService
 }
-func NewUserController(userService services.IUserService) *UserController {
-    return &UserController{
-        userService: userService,
+func NewCampaignController(campaignService services.ICampaignService) *CampaignController {
+    return &CampaignController{
+        campaignService: campaignService,
     }
 }
-func (p *UserController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
-func (p *UserController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
-func (p *UserController) Put(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Put(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
-func (p *UserController) Delete(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Delete(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }

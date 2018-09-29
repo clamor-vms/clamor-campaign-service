@@ -18,7 +18,7 @@ import (
     "github.com/jinzhu/gorm"
 )
 
-type User struct {
+type Campaign struct {
     gorm.Model
 
     Name string  `gorm:"size:255"`
