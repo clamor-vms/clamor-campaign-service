@@ -14,7 +14,7 @@
 # 
 .DS_Store
 *.swp
-src/operation
+src/campaign
 src/vendor
 src/vendor.orig
 config/config.yaml
