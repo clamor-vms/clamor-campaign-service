@@ -134,6 +134,21 @@
             ]
         },
 
+        "run": {
+            "Requires": ["_build", "_pack"],
+            "Steps": [
+                {
+                    "Type": "RunCommand",
+                    "Args": {
+                        "Command": [
+                            "./src/operation",
+                            "serve"
+                        ]
+                    }
+                }
+            ]
+        },
+
         "stop": {
             "Requires": [],
             "Steps": [
@@ -145,6 +160,22 @@
                             "delete",
                             "deployments,services,pods,pv,pvc,cronjob,job",
                             "--all"
+                        ]
+                    }
+                }
+            ]
+        },
+
+        "clean": {
+            "Requires": [],
+            "Steps": [
+                {
+                    "Type": "RunCommand",
+                    "Args": {
+                        "Command": [
+                            "rm",
+                            "-rf",
+                            "${DIR}/working/mysql"
                         ]
                     }
                 }

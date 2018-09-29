@@ -15,9 +15,15 @@
 
 package core
 
+import (
+    "os"
+)
+
 const SERVICE_VERSION = "0.0.1-beta"
 const PORT_NUMBER = "80"
+var JWT_SECRET = os.Getenv("JWT_SECRET")
 
 const DATABASE_USER = "skaioskit"
 const DATABASE_HOST = "operation-service-mysql"
 const DATABASE_NAME = "operation"
+var DATABASE_PASS = os.Getenv("MYSQL_PASSWORD")

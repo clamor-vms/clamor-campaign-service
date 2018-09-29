@@ -16,7 +16,6 @@
 package commands
 
 import (
-    "os"
     "net/http"
 
     "github.com/spf13/cobra"
@@ -37,7 +36,7 @@ var serveCmd = &cobra.Command{
     Long:  `runs the rest api`,
     Run: func(cmd *cobra.Command, args []string) {
         //setup db connection
-        conStr := skaioskit.BuildMySqlConnectionString(core.DATABASE_USER, os.Getenv("MYSQL_PASSWORD"), core.DATABASE_HOST, core.DATABASE_NAME)
+        conStr := skaioskit.BuildMySqlConnectionString(core.DATABASE_USER, core.DATABASE_PASS, core.DATABASE_HOST, core.DATABASE_NAME)
         db, err := gorm.Open("mysql", conStr)
         if err != nil {
             panic(err)
@@ -59,7 +58,7 @@ var serveCmd = &cobra.Command{
         r.HandleFunc("/user", userController.Logic)
 
         //wrap everything behind a jwt middleware
-        jwtMiddleware := skaioskit.JWTEnforceMiddleware([]byte(os.Getenv("JWT_SECRET")))
+        jwtMiddleware := skaioskit.JWTEnforceMiddleware([]byte(core.JWT_SECRET))
         http.Handle("/", skaioskit.PanicHandler(jwtMiddleware(r)))
 
         //server up app
