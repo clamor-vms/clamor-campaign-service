@@ -1,5 +1,5 @@
 {
-    "Title": "Skaioskit Operation Service",
+    "Title": "Skaioskit Campaign Service",
     "Commands": {
         "_build": {
             "Requires": [],
@@ -37,7 +37,7 @@
                             "-ldflags",
                             "-linkmode external -extldflags -static",
                             "-o",
-                            "operation"
+                            "campaign"
                         ]
                     }
                 }
@@ -56,7 +56,7 @@
                             "-f",
                             "./Dockerfile",
                             "-t",
-                            "localhost:5000/skaioskit/operation-service",
+                            "localhost:5000/skaioskit/campaign-service",
                             "."
                         ]
                     }
@@ -73,7 +73,7 @@
                         "Command": [
                             "docker",
                             "push",
-                            "localhost:5000/skaioskit/operation-service"
+                            "localhost:5000/skaioskit/campaign-service"
                         ]
                     }
                 }
@@ -91,13 +91,13 @@
                 {
                     "Type": "EnsureSecret",
                     "Args": {
-                        "Key": "skaioskit-operation-service-mysql-password"
+                        "Key": "skaioskit-campaign-service-mysql-password"
                     }
                 },
                 {
                     "Type": "EnsureSecret",
                     "Args": {
-                        "Key": "skaioskit-operation-service-mysql-root-password"
+                        "Key": "skaioskit-campaign-service-mysql-root-password"
                     }
                 },
                 {
@@ -141,7 +141,7 @@
                     "Type": "RunCommand",
                     "Args": {
                         "Command": [
-                            "./src/operation",
+                            "./src/campaign",
                             "serve"
                         ]
                     }

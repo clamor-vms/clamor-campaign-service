@@ -1,5 +1,5 @@
 FROM drone/ca-certs
 
-ADD src/operation /
+ADD src/campaign /
 
-CMD ["/operation"]
+CMD ["/campaign"]

@@ -24,6 +24,6 @@ const PORT_NUMBER = "80"
 var JWT_SECRET = os.Getenv("JWT_SECRET")
 
 const DATABASE_USER = "skaioskit"
-const DATABASE_HOST = "operation-service-mysql"
-const DATABASE_NAME = "operation"
+const DATABASE_HOST = "campaign-service-mysql"
+const DATABASE_NAME = "campaign"
 var DATABASE_PASS = os.Getenv("MYSQL_PASSWORD")
