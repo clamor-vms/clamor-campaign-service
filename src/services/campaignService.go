@@ -26,6 +26,7 @@ type ICampaignService interface {
     UpdateCampaign(models.Campaign) (models.Campaign, error)
     GetCampaign(uint) (models.Campaign, error)
     GetCampaigns() ([]models.Campaign, error)
+    DeleteCampaign(uint) (error)
     EnsureCampaignTable()
 }
 
@@ -53,15 +54,15 @@ func (p *CampaignService) GetCampaigns() ([]models.Campaign, error) {
     err := p.db.Find(&campaigns).Error
     return campaigns, err
 }
+func (p *CampaignService) DeleteCampaign(id uint) error {
+    campaign, err := p.GetCampaign(id)
+
+    if err == nil {
+        err = p.db.Delete(&campaign).Error
+    }
+
+    return err
+}
 func (p *CampaignService) EnsureCampaignTable() {
     p.db.AutoMigrate(&models.Campaign{})
-}
-func (p *CampaignService) EnsureCampaign(campaign models.Campaign) {
-    existing, err := p.GetCampaign(campaign.ID)
-    if err != nil {
-        p.CreateCampaign(campaign)
-    } else {
-        existing.Name = campaign.Name
-        p.UpdateCampaign(existing)
-    }
 }

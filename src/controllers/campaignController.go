@@ -37,7 +37,6 @@ func NewCampaignController(campaignService services.ICampaignService) *CampaignC
 }
 func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     idStr, ok := r.URL.Query()["id"]
-    // return skaioskit.ControllerResponse{Status: http.StatusOK, Body: models.Campaign{Name: "testn", Description: "testd"}}
 
     if ok {
         // Get requested Campaign by id
@@ -100,5 +99,21 @@ func (p *CampaignController) Put(w http.ResponseWriter, r *http.Request) skaiosk
     }
 }
 func (p *CampaignController) Delete(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+    idStr, ok := r.URL.Query()["id"]
+
+    if ok {
+        // Get requested Campaign by id
+
+        id, err := strconv.ParseUint(idStr[0], 10, 32)
+        if err == nil {
+            err := p.campaignService.DeleteCampaign(uint(id))
+
+            if err == nil {
+                return skaioskit.ControllerResponse{Status: http.StatusOK, Body: skaioskit.EmptyResponse{}}
+            }
+        }
+    }
+    
+    // return 404 if we don't find any campaigns
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
