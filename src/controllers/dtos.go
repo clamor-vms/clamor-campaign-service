@@ -23,9 +23,15 @@ type GetCampaiagnsResult struct {
     Campaigns []models.Campaign
 }
 
+
 type GetAboutResponse struct {
     Name string
     CoreVersion string
     Version string
     BuildTime string
 }
+/*
+type GetCampaignResponse struct {
+    Name string
+    Description string
+}*/

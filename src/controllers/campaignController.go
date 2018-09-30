@@ -16,7 +16,7 @@
 package controllers
 
 import (
-    "log"
+    // "log"
     "strconv"
     "net/http"
     "encoding/json"
@@ -37,10 +37,12 @@ func NewCampaignController(campaignService services.ICampaignService) *CampaignC
 }
 func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     idStr, ok := r.URL.Query()["id"]
+    // return skaioskit.ControllerResponse{Status: http.StatusOK, Body: models.Campaign{Name: "testn", Description: "testd"}}
 
     if ok {
-        id, err := strconv.ParseUint(idStr[0], 10, 32)
+        // Get requested Campaign by id
 
+        id, err := strconv.ParseUint(idStr[0], 10, 32)
         if err == nil {
             campaign, err := p.campaignService.GetCampaign(uint(id))
 
@@ -49,18 +51,19 @@ func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaiosk
             }
         }
     } else {
+        // Get all visible campaigns
+
         campaigns, err := p.campaignService.GetCampaigns()
 
         if err == nil {
             return skaioskit.ControllerResponse{Status: http.StatusOK, Body: GetCampaiagnsResult{Campaigns: campaigns}}
         }
     }
-
+    
+    // return 404 if we don't find any campaigns
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
 func (p *CampaignController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
-    log.Output(1, "here")
-
     //Parse request into struct
     decoder := json.NewDecoder(r.Body)
     var data models.Campaign
