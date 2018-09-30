@@ -23,6 +23,9 @@ type GetCampaiagnsResult struct {
     Campaigns []models.Campaign
 }
 
+type GetCampaiagnTypesResult struct {
+    CampaignTypes []models.CampaignType
+}
 
 type GetAboutResponse struct {
     Name string
@@ -30,8 +33,3 @@ type GetAboutResponse struct {
     Version string
     BuildTime string
 }
-/*
-type GetCampaignResponse struct {
-    Name string
-    Description string
-}*/

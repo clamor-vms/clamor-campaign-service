@@ -46,15 +46,21 @@ var serveCmd = &cobra.Command{
         //setup services
         campaignService := services.NewCampaignService(db)
 
+        //ensure tables
+        campaignService.EnsureCampaignTypeTable()
         campaignService.EnsureCampaignTable()
+        //ensure data
+        campaignService.EnsureCampaignTypes()
 
         //build controllers
         aboutController := skaioskit.NewControllerProcessor(controllers.NewAboutController())
+        campaignTypeController := skaioskit.NewControllerProcessor(controllers.NewCampaignTypeController(campaignService))
         campaignController := skaioskit.NewControllerProcessor(controllers.NewCampaignController(campaignService))
 
         //setup routing to controllers
         r := mux.NewRouter()
         r.HandleFunc("/about", aboutController.Logic)
+        r.HandleFunc("/type", campaignTypeController.Logic)
         r.HandleFunc("/campaign", campaignController.Logic)
 
         //wrap everything behind a jwt middleware

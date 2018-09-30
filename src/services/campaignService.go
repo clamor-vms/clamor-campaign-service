@@ -28,6 +28,9 @@ type ICampaignService interface {
     GetCampaigns() ([]models.Campaign, error)
     DeleteCampaign(uint) (error)
     EnsureCampaignTable()
+    GetCampaignTypes() ([]models.CampaignType, error)
+    EnsureCampaignTypeTable()
+    EnsureCampaignTypes()
 }
 
 type CampaignService struct {
@@ -36,6 +39,7 @@ type CampaignService struct {
 func NewCampaignService(db *gorm.DB) *CampaignService {
     return &CampaignService{db: db}
 }
+//campaigns
 func (p *CampaignService) CreateCampaign(campaign models.Campaign) (models.Campaign, error) {
     err := p.db.Create(&campaign).Error
     return campaign, err
@@ -65,4 +69,41 @@ func (p *CampaignService) DeleteCampaign(id uint) error {
 }
 func (p *CampaignService) EnsureCampaignTable() {
     p.db.AutoMigrate(&models.Campaign{})
+}
+//campaignTypes
+func (p *CampaignService) GetCampaignTypes() ([]models.CampaignType, error) {
+    var campaignTypes []models.CampaignType
+    err := p.db.Find(&campaignTypes).Error
+    return campaignTypes, err
+}
+func (p *CampaignService) EnsureCampaignTypeTable() {
+    p.db.AutoMigrate(&models.CampaignType{})
+}
+func (p *CampaignService) EnsureCampaignTypes() {
+    p.ensureCampaignType("US House Congress Race", "A campaign to elect a federal canididate to the US House.")
+    p.ensureCampaignType("US Senate Congress Race", "A campaign to elect a federal canididate to the US Senate.")
+    p.ensureCampaignType("Ballot Initiative", "A campaign to collection ballot initiative signature of register voters.")
+}
+func (p *CampaignService) ensureCampaignType(name string, description string) {
+    existing, err := p.getCampaignType(name)
+    if err == nil {
+        existing.Description = description;
+        p.updateCampaignType(existing)
+    } else {
+        data := models.CampaignType{Name: name, Description: description}
+        p.createCampaignType(data)
+    }
+}
+func (p *CampaignService) createCampaignType(campaignType models.CampaignType) (models.CampaignType, error) {
+    err := p.db.Create(&campaignType).Error
+    return campaignType, err
+}
+func (p *CampaignService) updateCampaignType(campaignType models.CampaignType) (models.CampaignType, error) {
+    err := p.db.Save(&campaignType).Error
+    return campaignType, err
+}
+func (p *CampaignService) getCampaignType(name string) (models.CampaignType, error) {
+    var campaignType models.CampaignType
+    err := p.db.Where(&models.CampaignType{Name: name}).First(&campaignType).Error
+    return campaignType, err
 }
