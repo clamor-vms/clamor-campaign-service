@@ -15,9 +15,26 @@
 
 package main
 
-import "skaioskit/commands"
+import (
+    "os"
+    "fmt"
+    "log"
+
+    "skaioskit/commands"
+)
 
 //Lets enter into the cobra cli stuff.
 func main() {
+    // open a file
+    f, err := os.OpenFile("/logs/service.log", os.O_APPEND | os.O_CREATE | os.O_RDWR, 0666)
+    if err != nil {
+        fmt.Printf("error opening file: %v", err)
+    }
+    defer f.Close()
+    // assign it to the standard logger
+    log.SetOutput(f)
+
+    log.Output(1, "starting service.")
+    
     commands.Execute()
 }

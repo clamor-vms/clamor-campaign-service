@@ -13,19 +13,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package controllers
-
+package models
 import (
-    "skaioskit/models"
+    "github.com/jinzhu/gorm"
 )
 
-type GetCampaiagnsResult struct {
-    Campaigns []models.Campaign
-}
+type CampaignType struct {
+    gorm.Model
 
-type GetAboutResponse struct {
-    Name string
-    CoreVersion string
-    Version string
-    BuildTime string
+    Name string  `gorm:"size:1024"`
+    Description string  `gorm:"size:4096"`
 }

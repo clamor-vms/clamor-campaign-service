@@ -22,9 +22,10 @@ import (
 )
 
 type ICampaignService interface {
-    CreateCampaign(models.Campaign) models.Campaign
-    UpdateCampaign(models.Campaign) models.Campaign
-    GetCampaign(string) (models.Campaign, error)
+    CreateCampaign(models.Campaign) (models.Campaign, error)
+    UpdateCampaign(models.Campaign) (models.Campaign, error)
+    GetCampaign(uint) (models.Campaign, error)
+    GetCampaigns() ([]models.Campaign, error)
     EnsureCampaignTable()
 }
 
@@ -34,24 +35,29 @@ type CampaignService struct {
 func NewCampaignService(db *gorm.DB) *CampaignService {
     return &CampaignService{db: db}
 }
-func (p *CampaignService) CreateCampaign(campaign models.Campaign) models.Campaign {
-    p.db.Create(&campaign)
-    return campaign
-}
-func (p *CampaignService) UpdateCampaign(campaign models.Campaign) models.Campaign {
-    p.db.Save(&campaign)
-    return campaign
-}
-func (p *CampaignService) GetCampaign(name string) (models.Campaign, error) {
-    var campaign models.Campaign
-    err := p.db.Where(&models.Campaign{Name: name}).First(&campaign).Error
+func (p *CampaignService) CreateCampaign(campaign models.Campaign) (models.Campaign, error) {
+    err := p.db.Create(&campaign).Error
     return campaign, err
+}
+func (p *CampaignService) UpdateCampaign(campaign models.Campaign) (models.Campaign, error) {
+    err := p.db.Save(&campaign).Error
+    return campaign, err
+}
+func (p *CampaignService) GetCampaign(id uint) (models.Campaign, error) {
+    var campaign models.Campaign
+    err := p.db.First(&campaign, id).Error
+    return campaign, err
+}
+func (p *CampaignService) GetCampaigns() ([]models.Campaign, error) {
+    var campaigns []models.Campaign
+    err := p.db.Find(&campaigns).Error
+    return campaigns, err
 }
 func (p *CampaignService) EnsureCampaignTable() {
     p.db.AutoMigrate(&models.Campaign{})
 }
 func (p *CampaignService) EnsureCampaign(campaign models.Campaign) {
-    existing, err := p.GetCampaign(campaign.Name)
+    existing, err := p.GetCampaign(campaign.ID)
     if err != nil {
         p.CreateCampaign(campaign)
     } else {

@@ -21,5 +21,6 @@ import (
 type Campaign struct {
     gorm.Model
 
-    Name string  `gorm:"size:255"`
+    Name string  `gorm:"size:1024"`
+    Description string  `gorm:"size:4096"`
 }

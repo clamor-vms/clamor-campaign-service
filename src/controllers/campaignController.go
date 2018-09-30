@@ -16,10 +16,14 @@
 package controllers
 
 import (
+    "log"
+    "strconv"
     "net/http"
+    "encoding/json"
 
     skaioskit "github.com/nathanmentley/skaioskit-go-core"
 
+    "skaioskit/models"
     "skaioskit/services"
 )
 
@@ -32,13 +36,65 @@ func NewCampaignController(campaignService services.ICampaignService) *CampaignC
     }
 }
 func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+    idStr, ok := r.URL.Query()["id"]
+
+    if ok {
+        id, err := strconv.ParseUint(idStr[0], 10, 32)
+
+        if err == nil {
+            campaign, err := p.campaignService.GetCampaign(uint(id))
+
+            if err == nil {
+                return skaioskit.ControllerResponse{Status: http.StatusOK, Body: campaign}
+            }
+        }
+    } else {
+        campaigns, err := p.campaignService.GetCampaigns()
+
+        if err == nil {
+            return skaioskit.ControllerResponse{Status: http.StatusOK, Body: GetCampaiagnsResult{Campaigns: campaigns}}
+        }
+    }
+
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
 func (p *CampaignController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
+    log.Output(1, "here")
+
+    //Parse request into struct
+    decoder := json.NewDecoder(r.Body)
+    var data models.Campaign
+    err := decoder.Decode(&data)
+
+    if err == nil {
+        campaign, err := p.campaignService.CreateCampaign(data)
+        if err == nil {
+            return skaioskit.ControllerResponse{Status: http.StatusOK, Body: campaign}
+        } else {
+            return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+        }
+    } else {
+        //if json doesn't map to struct return error
+        return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+    }
 }
 func (p *CampaignController) Put(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
+    //Parse request into struct
+    decoder := json.NewDecoder(r.Body)
+    var data models.Campaign
+    err := decoder.Decode(&data)
+
+    if err != nil {
+        //if json doesn't map to struct return error
+        return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+    } else {
+        campaign, err := p.campaignService.UpdateCampaign(data)
+        if err == nil {
+            return skaioskit.ControllerResponse{Status: http.StatusOK, Body: campaign}
+        } else {
+            return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+        }
+    }
 }
 func (p *CampaignController) Delete(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
