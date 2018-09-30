@@ -23,4 +23,5 @@ type Campaign struct {
 
     Name string             `gorm:"size:1024"`
     Description string      `gorm:"size:4096"`
+    CampaignTypeID uint
 }

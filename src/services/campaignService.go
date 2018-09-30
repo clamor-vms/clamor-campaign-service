@@ -69,6 +69,7 @@ func (p *CampaignService) DeleteCampaign(id uint) error {
 }
 func (p *CampaignService) EnsureCampaignTable() {
     p.db.AutoMigrate(&models.Campaign{})
+    p.db.Model(&models.Campaign{}).AddForeignKey("campaign_type_id", "campaign_type(id)", "CASCADE", "RESTRICT")
 }
 //campaignTypes
 func (p *CampaignService) GetCampaignTypes() ([]models.CampaignType, error) {
