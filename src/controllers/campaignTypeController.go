@@ -16,6 +16,8 @@
 package controllers
 
 import (
+    "fmt"
+    "log"
     "net/http"
 
     skaioskit "github.com/nathanmentley/skaioskit-go-core"
@@ -36,9 +38,10 @@ func (p *CampaignTypeController) Get(w http.ResponseWriter, r *http.Request) ska
 
     if err == nil {
         return skaioskit.ControllerResponse{Status: http.StatusOK, Body: GetCampaiagnTypesResult{CampaignTypes: campaignTypes}}
+    } else {
+        log.Output(1, fmt.Sprintf("Campaign Type Controller Get Error: %s", err.Error()))
+        return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
     }
-    
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
 func (p *CampaignTypeController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}

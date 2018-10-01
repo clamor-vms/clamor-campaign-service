@@ -42,20 +42,26 @@ func NewCampaignService(db *gorm.DB) *CampaignService {
 //campaigns
 func (p *CampaignService) CreateCampaign(campaign models.Campaign) (models.Campaign, error) {
     err := p.db.Create(&campaign).Error
+    
     return campaign, err
 }
 func (p *CampaignService) UpdateCampaign(campaign models.Campaign) (models.Campaign, error) {
     err := p.db.Save(&campaign).Error
+    
     return campaign, err
 }
 func (p *CampaignService) GetCampaign(id uint) (models.Campaign, error) {
     var campaign models.Campaign
-    err := p.db.First(&campaign, id).Error
+    
+    err := p.db.Preload("CampaignType").First(&campaign, id).Error
+
     return campaign, err
 }
 func (p *CampaignService) GetCampaigns() ([]models.Campaign, error) {
     var campaigns []models.Campaign
-    err := p.db.Find(&campaigns).Error
+    
+    err := p.db.Preload("CampaignType").Find(&campaigns).Error
+
     return campaigns, err
 }
 func (p *CampaignService) DeleteCampaign(id uint) error {
@@ -74,7 +80,9 @@ func (p *CampaignService) EnsureCampaignTable() {
 //campaignTypes
 func (p *CampaignService) GetCampaignTypes() ([]models.CampaignType, error) {
     var campaignTypes []models.CampaignType
+    
     err := p.db.Find(&campaignTypes).Error
+    
     return campaignTypes, err
 }
 func (p *CampaignService) EnsureCampaignTypeTable() {
@@ -97,14 +105,18 @@ func (p *CampaignService) ensureCampaignType(name string, description string) {
 }
 func (p *CampaignService) createCampaignType(campaignType models.CampaignType) (models.CampaignType, error) {
     err := p.db.Create(&campaignType).Error
+    
     return campaignType, err
 }
 func (p *CampaignService) updateCampaignType(campaignType models.CampaignType) (models.CampaignType, error) {
     err := p.db.Save(&campaignType).Error
+    
     return campaignType, err
 }
 func (p *CampaignService) getCampaignType(name string) (models.CampaignType, error) {
     var campaignType models.CampaignType
+    
     err := p.db.Where(&models.CampaignType{Name: name}).First(&campaignType).Error
+    
     return campaignType, err
 }
