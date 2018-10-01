@@ -19,14 +19,17 @@ import (
     "skaioskit/models"
 )
 
+// Get Campaign results. List of campaigns
 type GetCampaiagnsResult struct {
     Campaigns []models.Campaign
 }
 
+// Get Campaign Types. List of campaign types.
 type GetCampaiagnTypesResult struct {
     CampaignTypes []models.CampaignType
 }
 
+// Get About response. Just version strings and similar things. (It may make sense to use a standard format for all services?)
 type GetAboutResponse struct {
     Name string
     CoreVersion string

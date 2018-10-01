@@ -30,6 +30,7 @@ func NewAboutController() *AboutController {
     return &AboutController{}
 }
 func (p *AboutController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+    // return version info.
     return skaioskit.ControllerResponse{Status: http.StatusOK, Body: GetAboutResponse{
         Name: "Skaioskit Campaign Service",
         CoreVersion: skaioskit.VERSION,
@@ -37,6 +38,7 @@ func (p *AboutController) Get(w http.ResponseWriter, r *http.Request) skaioskit.
         BuildTime: os.Getenv("BUILD_DATETIME"),
     }}
 }
+// Non used actions
 func (p *AboutController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
     return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
 }
