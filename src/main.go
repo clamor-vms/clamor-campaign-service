@@ -20,7 +20,7 @@ import (
     "fmt"
     "log"
 
-    "skaioskit/commands"
+    "clamor/commands"
 )
 
 //Lets enter into the cobra cli stuff.

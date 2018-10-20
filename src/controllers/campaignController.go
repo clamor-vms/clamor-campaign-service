@@ -21,10 +21,10 @@ import (
     "net/http"
     "encoding/json"
 
-    skaioskit "github.com/nathanmentley/skaioskit-go-core"
+    clamor "github.com/clamor-vms/clamor-go-core"
 
-    "skaioskit/models"
-    "skaioskit/services"
+    "clamor/models"
+    "clamor/services"
 )
 
 type CampaignController struct {
@@ -35,7 +35,7 @@ func NewCampaignController(campaignService services.ICampaignService) *CampaignC
         campaignService: campaignService,
     }
 }
-func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
     idStr, ok := r.URL.Query()["id"]
 
     if ok {
@@ -46,7 +46,7 @@ func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaiosk
             campaign, err := p.campaignService.GetCampaign(uint(id))
 
             if err == nil {
-                return skaioskit.ControllerResponse{Status: http.StatusOK, Body: campaign}
+                return clamor.ControllerResponse{Status: http.StatusOK, Body: campaign}
             }
         }
     } else {
@@ -55,14 +55,14 @@ func (p *CampaignController) Get(w http.ResponseWriter, r *http.Request) skaiosk
         campaigns, err := p.campaignService.GetCampaigns()
 
         if err == nil {
-            return skaioskit.ControllerResponse{Status: http.StatusOK, Body: GetCampaiagnsResult{Campaigns: campaigns}}
+            return clamor.ControllerResponse{Status: http.StatusOK, Body: GetCampaiagnsResult{Campaigns: campaigns}}
         }
     }
     
     // return 404 if we don't find any campaigns
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
+    return clamor.ControllerResponse{Status: http.StatusNotFound, Body: clamor.EmptyResponse{}}
 }
-func (p *CampaignController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Post(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
     //Parse request into struct
     decoder := json.NewDecoder(r.Body)
     var data models.Campaign
@@ -71,16 +71,16 @@ func (p *CampaignController) Post(w http.ResponseWriter, r *http.Request) skaios
     if err == nil {
         campaign, err := p.campaignService.CreateCampaign(data)
         if err == nil {
-            return skaioskit.ControllerResponse{Status: http.StatusOK, Body: campaign}
+            return clamor.ControllerResponse{Status: http.StatusOK, Body: campaign}
         } else {
-            return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+            return clamor.ControllerResponse{Status: http.StatusInternalServerError, Body: clamor.EmptyResponse{}}
         }
     } else {
         //if json doesn't map to struct return error
-        return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+        return clamor.ControllerResponse{Status: http.StatusInternalServerError, Body: clamor.EmptyResponse{}}
     }
 }
-func (p *CampaignController) Put(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Put(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
     //Parse request into struct
     decoder := json.NewDecoder(r.Body)
     var data models.Campaign
@@ -88,17 +88,17 @@ func (p *CampaignController) Put(w http.ResponseWriter, r *http.Request) skaiosk
 
     if err != nil {
         //if json doesn't map to struct return error
-        return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+        return clamor.ControllerResponse{Status: http.StatusInternalServerError, Body: clamor.EmptyResponse{}}
     } else {
         campaign, err := p.campaignService.UpdateCampaign(data)
         if err == nil {
-            return skaioskit.ControllerResponse{Status: http.StatusOK, Body: campaign}
+            return clamor.ControllerResponse{Status: http.StatusOK, Body: campaign}
         } else {
-            return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+            return clamor.ControllerResponse{Status: http.StatusInternalServerError, Body: clamor.EmptyResponse{}}
         }
     }
 }
-func (p *CampaignController) Delete(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignController) Delete(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
     idStr, ok := r.URL.Query()["id"]
 
     if ok {
@@ -109,11 +109,11 @@ func (p *CampaignController) Delete(w http.ResponseWriter, r *http.Request) skai
             err := p.campaignService.DeleteCampaign(uint(id))
 
             if err == nil {
-                return skaioskit.ControllerResponse{Status: http.StatusOK, Body: skaioskit.EmptyResponse{}}
+                return clamor.ControllerResponse{Status: http.StatusOK, Body: clamor.EmptyResponse{}}
             }
         }
     }
     
     // return 404 if we don't find any campaigns
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
+    return clamor.ControllerResponse{Status: http.StatusNotFound, Body: clamor.EmptyResponse{}}
 }

@@ -20,9 +20,9 @@ import (
     "log"
     "net/http"
 
-    skaioskit "github.com/nathanmentley/skaioskit-go-core"
+    clamor "github.com/clamor-vms/clamor-go-core"
 
-    "skaioskit/services"
+    "clamor/services"
 )
 
 type CampaignTypeController struct {
@@ -33,25 +33,25 @@ func NewCampaignTypeController(campaignService services.ICampaignService) *Campa
         campaignService: campaignService,
     }
 }
-func (p *CampaignTypeController) Get(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
+func (p *CampaignTypeController) Get(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
     campaignTypes, err := p.campaignService.GetCampaignTypes()
 
     if err == nil {
         //return list of all campaign types
-        return skaioskit.ControllerResponse{Status: http.StatusOK, Body: GetCampaiagnTypesResult{CampaignTypes: campaignTypes}}
+        return clamor.ControllerResponse{Status: http.StatusOK, Body: GetCampaiagnTypesResult{CampaignTypes: campaignTypes}}
     } else {
         //Log the error and send a 500 back.
         log.Output(1, fmt.Sprintf("Campaign Type Controller Get Error: %s", err.Error()))
-        return skaioskit.ControllerResponse{Status: http.StatusInternalServerError, Body: skaioskit.EmptyResponse{}}
+        return clamor.ControllerResponse{Status: http.StatusInternalServerError, Body: clamor.EmptyResponse{}}
     }
 }
 //return 404 for all other actions. This is read only static content.
-func (p *CampaignTypeController) Post(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
+func (p *CampaignTypeController) Post(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
+    return clamor.ControllerResponse{Status: http.StatusNotFound, Body: clamor.EmptyResponse{}}
 }
-func (p *CampaignTypeController) Put(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
+func (p *CampaignTypeController) Put(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
+    return clamor.ControllerResponse{Status: http.StatusNotFound, Body: clamor.EmptyResponse{}}
 }
-func (p *CampaignTypeController) Delete(w http.ResponseWriter, r *http.Request) skaioskit.ControllerResponse {
-    return skaioskit.ControllerResponse{Status: http.StatusNotFound, Body: skaioskit.EmptyResponse{}}
+func (p *CampaignTypeController) Delete(w http.ResponseWriter, r *http.Request) clamor.ControllerResponse {
+    return clamor.ControllerResponse{Status: http.StatusNotFound, Body: clamor.EmptyResponse{}}
 }

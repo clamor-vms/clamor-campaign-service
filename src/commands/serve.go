@@ -23,11 +23,11 @@ import (
     "github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/mysql"
 
-    skaioskit "github.com/nathanmentley/skaioskit-go-core"
+    clamor "github.com/clamor-vms/clamor-go-core"
 
-    "skaioskit/core"
-    "skaioskit/services"
-    "skaioskit/controllers"
+    "clamor/core"
+    "clamor/services"
+    "clamor/controllers"
 )
 
 var serveCmd = &cobra.Command{
@@ -36,7 +36,7 @@ var serveCmd = &cobra.Command{
     Long:  `runs the rest api`,
     Run: func(cmd *cobra.Command, args []string) {
         //setup db connection
-        conStr := skaioskit.BuildMySqlConnectionString(core.DATABASE_USER, core.DATABASE_PASS, core.DATABASE_HOST, core.DATABASE_NAME)
+        conStr := clamor.BuildMySqlConnectionString(core.DATABASE_USER, core.DATABASE_PASS, core.DATABASE_HOST, core.DATABASE_NAME)
         db, err := gorm.Open("mysql", conStr)
         if err != nil {
             panic(err)
@@ -53,9 +53,9 @@ var serveCmd = &cobra.Command{
         campaignService.EnsureCampaignTypes()
 
         //build controllers
-        aboutController := skaioskit.NewControllerProcessor(controllers.NewAboutController())
-        campaignTypeController := skaioskit.NewControllerProcessor(controllers.NewCampaignTypeController(campaignService))
-        campaignController := skaioskit.NewControllerProcessor(controllers.NewCampaignController(campaignService))
+        aboutController := clamor.NewControllerProcessor(controllers.NewAboutController())
+        campaignTypeController := clamor.NewControllerProcessor(controllers.NewCampaignTypeController(campaignService))
+        campaignController := clamor.NewControllerProcessor(controllers.NewCampaignController(campaignService))
 
         //setup routing to controllers
         r := mux.NewRouter()
@@ -64,8 +64,8 @@ var serveCmd = &cobra.Command{
         r.HandleFunc("/campaign", campaignController.Logic)
 
         //wrap everything behind a jwt middleware
-        jwtMiddleware := skaioskit.JWTEnforceMiddleware([]byte(core.JWT_SECRET))
-        http.Handle("/", skaioskit.PanicHandler(jwtMiddleware(r)))
+        jwtMiddleware := clamor.JWTEnforceMiddleware([]byte(core.JWT_SECRET))
+        http.Handle("/", clamor.PanicHandler(jwtMiddleware(r)))
 
         //server up app
         if err := http.ListenAndServe(":" + core.PORT_NUMBER, nil); err != nil {

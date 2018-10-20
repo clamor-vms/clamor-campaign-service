@@ -16,7 +16,7 @@
 package controllers
 
 import (
-    "skaioskit/models"
+    "clamor/models"
 )
 
 // Get Campaign results. List of campaigns

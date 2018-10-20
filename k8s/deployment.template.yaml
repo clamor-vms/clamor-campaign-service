@@ -22,18 +22,18 @@ spec:
         name: mysql
         env:
         - name: MYSQL_USER
-          value: skaioskit
+          value: clamor
         - name: MYSQL_DATABASE
           value: campaign
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: skaioskit-campaign-service-mysql-root-password
+              name: clamor-campaign-service-mysql-root-password
               key: value
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: skaioskit-campaign-service-mysql-password
+              name: clamor-campaign-service-mysql-password
               key: value
         ports:
         - containerPort: 3306
@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
       - name: campaign-service
-        image: localhost:5000/skaioskit/campaign-service:latest
+        image: localhost:5000/clamor/campaign-service:latest
         imagePullPolicy: Always
         command: 
         - /campaign
@@ -85,12 +85,12 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: skaioskit-jwt-secret
+              name: clamor-jwt-secret
               key: value
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: skaioskit-campaign-service-mysql-password
+              name: clamor-campaign-service-mysql-password
               key: value
         volumeMounts:
         - name: log-storage
