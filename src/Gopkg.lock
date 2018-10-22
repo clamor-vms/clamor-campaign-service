@@ -5,7 +5,7 @@
   branch = "master"
   name = "github.com/clamor-vms/clamor-go-core"
   packages = ["."]
-  revision = "fecb2731c71a930340469028892a705698f4138a"
+  revision = "c3dc4c8c140f82f72488e048b4efd76e9e97215b"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"

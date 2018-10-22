@@ -65,10 +65,9 @@ var serveCmd = &cobra.Command{
 
         //wrap everything behind a jwt middleware
         jwtMiddleware := clamor.JWTEnforceMiddleware([]byte(core.JWT_SECRET))
-        http.Handle("/", clamor.PanicHandler(jwtMiddleware(r)))
 
         //server up app
-        if err := http.ListenAndServe(":" + core.PORT_NUMBER, nil); err != nil {
+        if err := http.ListenAndServe(":" + core.PORT_NUMBER, clamor.PanicHandler(jwtMiddleware(r))); err != nil {
             panic(err)
         }
     },
