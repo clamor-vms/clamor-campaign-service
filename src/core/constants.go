@@ -19,7 +19,7 @@ import (
     "os"
 )
 
-const SERVICE_VERSION = "0.0.1-beta"
+const SERVICE_VERSION = "0.0.2"
 const PORT_NUMBER = "80"
 var JWT_SECRET = os.Getenv("JWT_SECRET")
 
