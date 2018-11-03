@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
       - name: campaign-service
-        image: localhost:5000/clamor/campaign-service:latest
+        image: ${DOCKER_REG}/clamor/campaign-service:latest
         imagePullPolicy: Always
         command: 
         - /campaign
