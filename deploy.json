@@ -86,7 +86,7 @@
         },
         
         "deploy": {
-            "Requires": ["build"],
+            "Requires": [],
             "Steps": [
                 {
                     "Type": "EnsureSecret",
