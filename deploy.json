@@ -82,7 +82,21 @@
 
         "build": {
             "Requires": ["_build", "_pack", "_upload"],
-            "Steps": []
+            "Steps": [
+                {
+                    "Type": "CopyFile",
+                    "Args": {
+                        "Source": "k8s/deployment.template.yaml",
+                        "Target": "deployment.yaml"
+                    }
+                },
+                {
+                    "Type": "RunTemplate",
+                    "Args": {
+                        "File": "deployment.yaml"
+                    }
+                }
+            ]
         },
         
         "deploy": {
@@ -98,19 +112,6 @@
                     "Type": "EnsureSecret",
                     "Args": {
                         "Key": "clamor-campaign-service-mysql-root-password"
-                    }
-                },
-                {
-                    "Type": "CopyFile",
-                    "Args": {
-                        "Source": "k8s/deployment.template.yaml",
-                        "Target": "deployment.yaml"
-                    }
-                },
-                {
-                    "Type": "RunTemplate",
-                    "Args": {
-                        "File": "deployment.yaml"
                     }
                 },
                 {
